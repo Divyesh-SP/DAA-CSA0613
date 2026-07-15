@@ -1,0 +1,134 @@
+Q1. Application: Real-Time Search Index Compression
+A search indexing system reduces its input size by half at each recursive step. At every level,
+it performs additional indexing work proportional to the logarithm of the current input size.
+Apply the substitution method to solve the recurrence T(n)=T(n/2)+log⁡n. Expand the
+recurrence step-by-step and derive the final asymptotic time complexity. Analyze how the
+recursion depth influences performance. Interpret the efficiency using asymptotic notation.
+
+Given Recurrence
+T(n)=T(n/2)+logn
+Substitution Method (Expansion)
+
+Expand the recurrence:
+
+T(n)=T(n/2)+logn
+=T(n/4)+log(n/2)+logn
+=T(n/8)+log(n/4)+log(n/2)+logn
+
+After k expansions,
+
+T(n)=T(n/2k)+i=0∑k−1​log(2in​)
+	​	​
+The recursion stops when
+
+2kn​=1
+
+Therefore,
+
+k=log2​n
+
+Each recursive level contributes O(log n) work, and there are O(log n) levels.
+
+Hence,
+
+T(n)=O(logn×logn)
+T(n)=O((logn)^2)	​
+
+Recursion Depth Analysis
+Input size becomes half at every recursive call.
+Number of recursive levels = log₂ n.
+Work at each level is proportional to log n.
+Total work = log n × log n.
+Asymptotic Time Complexity
+O((logn)^2)​
+
+Source Code:
+import math
+
+def search_index_compression(n):
+    if n <= 1:
+        return 0
+    return math.log2(n) + search_index_compression(n // 2)
+
+n = int(input("Enter the input size: "))
+
+result = search_index_compression(n)
+
+print("Total indexing work:", round(result, 2))
+print("Asymptotic Time Complexity: O((log n)^2)")
+
+Output:
+Enter the input size: 16
+Total indexing work: 10.0
+Asymptotic Time Complexity: O((log n)^2)
+
+
+
+
+Q2. Application: Cloud Data Backup System
+A cloud backup system divides data into smaller chunks recursively:T(n) = 2T(n/2) + n log
+n.Apply the Master Theorem and determine the time complexity. Identify the correct case
+and justify your answer. Discuss how the algorithm scales with increasing data size and
+interpret using asymptotic notation.
+
+Given Recurrence
+T(n)=2T(n/2)+nlog⁡nT(n)=2T(n/2)+n\log nT(n)=2T(n/2)+nlogn 
+
+Applying the Master Theorem
+The recurrence is of the form:
+T(n)=aT(n/b)+f(n)T(n)=aT(n/b)+f(n)T(n)=aT(n/b)+f(n) 
+
+where,
+•	a=2a=2a=2 
+•	b=2b=2b=2 
+•	f(n)=nlog⁡nf(n)=n\log nf(n)=nlogn 
+
+Calculate:
+nlog⁡ba=nlog⁡22=nn^{\log_b a}=n^{\log_2 2}=nnlogba=nlog22=n 
+
+Compare:
+•	f(n)=nlog⁡nf(n)=n\log nf(n)=nlogn 
+•	nlog⁡ba=nn^{\log_b a}=nnlogba=n 
+Since
+f(n)=Θ(nlog⁡1n)=Θ(nlog⁡balog⁡1n)f(n)=\Theta\left(n\log^1 n\right) =\Theta\left(n^{\log_b a}\log^1 n\right)f(n)=Θ(nlog1n)=Θ(nlogbalog1n) 
+this matches Master Theorem Case 2, where
+f(n)=Θ(nlog⁡balog⁡kn),k=1f(n)=\Theta\left(n^{\log_b a}\log^k n\right),\quad k=1f(n)=Θ(nlogbalogkn),k=1 
+Therefore,
+T(n)=Θ(nlog⁡k+1n)T(n)=\Theta\left(n\log^{k+1}n\right)T(n)=Θ(nlogk+1n) T(n)=Θ(n(log⁡n)2)\boxed{T(n)=\Theta(n(\log n)^2)}T(n)=Θ(n(logn)2) 
+________________________________________
+
+Case Identification
+Master Theorem: Case 2
+Because
+f(n)=Θ(nlog⁡n)=Θ(nlog⁡22log⁡1n)f(n)=\Theta(n\log n)=\Theta(n^{\log_2 2}\log^1 n)f(n)=Θ(nlogn)=Θ(nlog22log1n) 
+________________________________________
+Scalability Analysis
+•	The data is divided into two equal halves recursively. 
+•	Each level performs nlog⁡nn\log nnlogn work. 
+•	There are log⁡n\log nlogn levels of recursion. 
+•	Hence, the total running time grows as: 
+nlog⁡n×log⁡n=n(log⁡n)2n\log n \times \log n = n(\log n)^2nlogn×logn=n(logn)2 
+As the data size increases, the algorithm scales efficiently but is slightly slower than O(nlog⁡n)O(n\log n)O(nlogn) because of the extra logarithmic factor.
+________________________________________
+Asymptotic Time Complexity
+Θ(n(log⁡n)2)\boxed{\Theta(n(\log n)^2)}Θ(n(logn)2)
+
+Source Code:
+import math
+
+def cloud_backup(n):
+    if n <= 1:
+        return 1
+    return 2 * cloud_backup(n // 2) + n * math.log2(n)
+
+n = int(input("Enter the data size: "))
+
+result = cloud_backup(n)
+
+print("Estimated backup work:", round(result, 2))
+print("Time Complexity: Θ(n (log n)^2)")
+
+Output:
+Enter the data size: 8
+Estimated backup work: 56.0
+Time Complexity: Θ(n (log n)^2)
